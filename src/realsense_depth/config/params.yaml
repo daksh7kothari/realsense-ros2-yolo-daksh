@@ -1,0 +1,40 @@
+depth_measure:
+  ros__parameters:
+    depth_topic: /camera/camera/aligned_depth_to_color/image_raw
+    info_topic: /camera/camera/color/camera_info
+    color_topic: /camera/camera/color/image_raw
+    probe_u: -1          # -1 resolves to the image centre
+    probe_v: -1
+    roi_half: 5          # 11x11 sampling window
+    depth_scale: 0.001   # D435 16UC1 depth is in millimetres
+    viewer: false
+    log_period_sec: 0.5
+
+yolo_measure:
+  ros__parameters:
+    model_path: "/home/daksh/realsense/largestboxmodel(1).pt"
+    depth_topic: /camera/camera/aligned_depth_to_color/image_raw
+    info_topic: /camera/camera/color/camera_info
+    color_topic: /camera/camera/color/image_raw
+    conf_thres: 0.5
+    imgsz: 640
+    device: cpu
+    roi_half: 5          # 11x11 sampling window at the box centre
+    depth_scale: 0.001   # D435 16UC1 depth is in millimetres
+    infer_period_sec: 0.2   # cap inference at 5 Hz on CPU
+    viewer: false
+    log_period_sec: 0.5
+
+cloud_pipeline:
+  ros__parameters:
+    cloud_topic: /camera/camera/depth/color/points
+    z_min: 0.3           # below the D435 minimum triangulation range
+    z_max: 3.0           # past this the stereo error exceeds ~2 cm
+    voxel_leaf: 0.01
+    remove_plane: true
+    plane_threshold: 0.015
+    plane_iterations: 100
+    plane_min_ratio: 0.25   # below this, assume no dominant plane is in view
+    cluster_gap_voxels: 1
+    min_cluster_points: 40
+    max_clusters: 20
